@@ -1,10 +1,9 @@
 import express from 'express'
 import axios from 'axios'
 import schedule from 'node-schedule'
-import ngrok from 'ngrok'
 
 const app = express()
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000
+const port = process.env.PORT || 3000
 
 // Replace with your actual credentials
 const accessToken = 'YOUR_USER_ACCESS_TOKEN'
@@ -33,13 +32,10 @@ async function sendBirthdayMessage() {
 
 // Schedule the message on August 25th at 00:00
 schedule.scheduleJob('0 0 * 8 25', sendBirthdayMessage)
-
-// Expose local server to a public URL using ngrok
-;(async () => {
-  const ngrokUrl = await ngrok.connect(port)
-  console.log(`Server is running at: ${ngrokUrl}`)
-})()
-
+app.get('/',(req,res)=>{
+  res.send('Meta app with express ts')
+})
+// Start the server
 app.listen(port, () => {
-  console.log(`Local server is running on port ${port}`)
+  console.log(`Server is running on port ${port}`)
 })
